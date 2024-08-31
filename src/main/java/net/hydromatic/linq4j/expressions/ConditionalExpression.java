@@ -33,55 +33,58 @@ import java.util.List;
  * </p>
  */
 public class ConditionalExpression extends AbstractNode {
-  private final List<Node> expressionList;
+    private final List<Node> expressionList;
 
-  public ConditionalExpression(List<Node> expressionList, Type type) {
-    super(ExpressionType.Conditional, type);
-    assert expressionList != null : "expressionList should not be null";
-    this.expressionList = expressionList;
-  }
-
-  @Override
-  void accept(ExpressionWriter writer, int lprec, int rprec) {
-    for (int i = 0; i < expressionList.size(); i += 2) {
-      writer.append(i > 0 ? " else if (" : "if (")
-          .append(expressionList.get(i))
-          .append(") ")
-          .append(Blocks.toBlock(expressionList.get(i + 1)));
-    }
-    if (expressionList.size() % 2 == 1) {
-      writer.append(" else ").append(Blocks.toBlock(expressionList.get(
-          expressionList.size() - 1)));
-    }
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    if (!super.equals(o)) {
-      return false;
+    public ConditionalExpression(List<Node> expressionList, Type type) {
+        super(ExpressionType.Conditional, type);
+        assert expressionList != null : "expressionList should not be null";
+        this.expressionList = expressionList;
     }
 
-    ConditionalExpression that = (ConditionalExpression) o;
-
-    if (!expressionList.equals(that.expressionList)) {
-      return false;
+    @Override
+    void accept(ExpressionWriter writer, int lprec, int rprec) {
+        for (int i = 0; i < expressionList.size(); i += 2) {
+            // 0,first if-statement
+            // others, else-if-statement
+            writer.append(i > 0 ? " else if (" : "if (")
+                    .append(expressionList.get(i))
+                    .append(") ")
+                    .append(Blocks.toBlock(expressionList.get(i + 1)));
+        }
+        // the last else block  maxthinkthink
+        if (expressionList.size() % 2 == 1) {
+            writer.append(" else ")
+                    .append(Blocks.toBlock(expressionList.get(expressionList.size() - 1)));
+        }
     }
 
-    return true;
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
-  @Override
-  public int hashCode() {
-    int result = super.hashCode();
-    result = 31 * result + expressionList.hashCode();
-    return result;
-  }
+        ConditionalExpression that = (ConditionalExpression) o;
+
+        if (!expressionList.equals(that.expressionList)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + expressionList.hashCode();
+        return result;
+    }
 }
 
 // End ConditionalExpression.java
