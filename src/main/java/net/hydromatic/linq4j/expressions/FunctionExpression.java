@@ -28,8 +28,7 @@ import java.util.*;
  *
  * @param <F> Function type
  */
-public final class FunctionExpression<F extends Function<?>>
-    extends LambdaExpression {
+public final class FunctionExpression<F extends Function<?>> extends LambdaExpression {
   public final F function;
   public final BlockStatement body;
   public final List<ParameterExpression> parameterList;
@@ -39,12 +38,10 @@ public final class FunctionExpression<F extends Function<?>>
    */
   private int hash;
 
-  private FunctionExpression(Class<F> type, F function, BlockStatement body,
-      List<ParameterExpression> parameterList) {
+  private FunctionExpression(Class<F> type, F function, BlockStatement body, List<ParameterExpression> parameterList) {
     super(ExpressionType.Lambda, type);
     assert type != null : "type should not be null";
-    assert function != null || body != null : "both function and body should "
-        + "not be null";
+    assert function != null || body != null : "both function and body should not be null";
     assert parameterList != null : "parameterList should not be null";
     this.function = function;
     this.body = body;
@@ -56,8 +53,7 @@ public final class FunctionExpression<F extends Function<?>>
         Collections.<ParameterExpression>emptyList());
   }
 
-  public FunctionExpression(Class<F> type, BlockStatement body,
-      List<ParameterExpression> parameters) {
+  public FunctionExpression(Class<F> type, BlockStatement body, List<ParameterExpression> parameters) {
     this(type, null, body, parameters);
   }
 
